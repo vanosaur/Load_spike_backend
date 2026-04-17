@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flash Sale Shield</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; background: #f4f7f6; }
+        .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: inline-block; }
+        button { background: #ff4757; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 5px; cursor: pointer; }
+        #log { margin-top: 20px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🌪️ Flash Sale Shield</h1>
+        <p>Simulate a massive load spike (50 requests/sec)</p>
+        <button onclick="triggerSpike()">🚀 TRIGGER LOAD SPIKE</button>
+        <div id="log"></div>
+    </div>
+
+    <script>
+        async function triggerSpike() {
+            const log = document.getElementById('log');
+            log.innerHTML = "<b>Blasting API...</b><br>";
+            
+            for(let i=1; i<=50; i++) {
+                fetch('/buy', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        userId: `User_${i}`,
+                        item: "PS5",
+                        idempotencyKey: `order_${Date.now()}_${i}`
+                    })
+                });
+            }
+            log.innerHTML += "<span class='success'>✅ 50 Orders sent to queue!</span><br>";
+            log.innerHTML += "<a href='/admin/queues' target='_blank'>Open Dashboard to watch them process →</a>";
+        }
+    </script>
+</body>
+</html>
